@@ -1,0 +1,19 @@
+users.txt data
+=================
+#1 money
+#2 daily time
+#3 weekly time
+#4 beg time
+#5 work time
+#6 snatch time
+
+
+commands
+=================
+hello
+waffles
+beg
+work
+bet
+snatch
+;end (only me :3)
