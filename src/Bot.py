@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 
-TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.XnvjJQ.lBRtf5VMd5ehgSKmyEk1fqJzKEc'
+TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.Xn6Fqg.lNXbZx4KB2beGG4q66aGaQxM1wc'
 
 client = discord.Client()
 
@@ -20,11 +20,6 @@ rand_names = []
 
 @client.event
 async def on_message(message):
-
-    # defining global vars
-    # global user_comm
-    # global global_temp
-    # global balance
 
     await client.wait_until_ready()
 
@@ -110,8 +105,8 @@ async def on_message(message):
                 user_comm[author] = ''
                 global_temp[author] = ""
         else:
-            msg = "You have to wait a little before working\n" + str(int((1800 - diff)/60)) + \
-                " more minutes until you can work again"
+            msg = "You have to wait a little before working\n" + \
+            str(int((1800 - diff)/60)) + " more minutes until you can work again"
         await client.send_message(message.channel, msg)
 
     if single_command(author, 'bet', message.content):
@@ -229,20 +224,19 @@ def memeString(s):
 
 # initializer
 async def initialize():
-    new_path = os.path.relpath('..\\subfldr1\\testfile.txt', cur_path)
-
-    # HEREEEE FILE PATHS  NOT WORKING YET
-    os.chdir('/foo/bar')
+    sys.path.insert(0, 'resources')
+    # HEREEEE FILE PATHS    NOT WORKING YET
     global user_comm
     await client.wait_until_ready()
     print('loading initial data...')
     # read in money values for balance{str:int}
-    data = open("..\\resources\\users.txt", "r")
+    data = open("resources/users.txt", "r")
     lines = data.readlines()
     for line in lines:
         vals = line.split()
         vals.extend(['|'])
-        user_data[vals[0]] = User(int(vals[1]), vals[2], vals[3], vals[4], vals[5], vals[6], vals[7])
+        user_data[vals[0]] = User(int(vals[1]), vals[2], vals[3], vals[4], \
+            vals[5], vals[6], vals[7])
     data.close()
 
     # create all user-specific vars: user_comm{str:str}, balance{str:int}
@@ -253,7 +247,7 @@ async def initialize():
                 user_data[m.id] = User()
 
     # initialize global data vars
-    names = open("..\\resources\\names.txt", "r")
+    names = open("resources/names.txt", "r")
     lines = names.readlines()
     for line in lines:
         rand_names.append(line)
@@ -261,7 +255,7 @@ async def initialize():
 
 def save_data():
     # save all balances to bank
-    data = open("..\\resources\\users.txt", 'w')
+    data = open("resources/users.txt", 'w')
     for key in user_data:
         data.write(str(key) + " " + str(user_data[key]) + "\n")
     data.close()
