@@ -1,11 +1,11 @@
-# The Waffle Reaper
+# The Blob Reaper
 *discord bot*
 
 CREATOR:          nzwl702
 
-BOT_NAME:         TheWaffleReaper
+BOT_NAME:         Blob Reaper
 
-LAST_UPDATE:      3.25.2020 5:15pm
+LAST_UPDATE:      3.27.2020 12:39pm
 
 DESCRIPTION:      incremental + virtual currency bot
 
