@@ -231,7 +231,7 @@ def memeString(s):
 async def initialize():
     new_path = os.path.relpath('..\\subfldr1\\testfile.txt', cur_path)
 
-    # HEREEEE
+    # HEREEEE FILE PATHS  NOT WORKING YET
     os.chdir('/foo/bar')
     global user_comm
     await client.wait_until_ready()
