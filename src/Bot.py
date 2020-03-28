@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 
-TOKEN = ''
+TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.Xn95vw.flZJJrGbze6VWbC3Wso3msZGKJ8'
 
 client = discord.Client()
 
@@ -35,12 +35,25 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
     if single_command(author, 'souls', message.content):
-        if len(message.content) <= len(prefix) + 6:
+        if len(message.content) <= len(prefix) + 5:
             msg = 'You have ' + str(user_data[author].souls) + ' soul stones.'
         else:
             tagger = str(message.content[len(prefix) + 9:-1])
             if id_validator(tagger):
                 msg = 'They have ' + str(user_data[tagger].souls) + ' soul stones.'
+            else:
+                msg = 'Gimme a real user id gdi.'
+        await client.send_message(message.channel, msg)
+
+    if single_command(author, 'cloth', message.content):
+        # ;cloth <@!asldfjalskdfj>
+        if len(message.content) <= len(prefix) + 5:
+            msg = 'You have ' + str(user_data[author].cloth) + ' pieces of cloth.'
+        else:
+            bfs = message.content.split()
+            tagger = str(bfs[1][3:-1])
+            if id_validator(tagger):
+                msg = 'They have ' + str(user_data[tagger].cloth) + ' pieces of cloth.'
             else:
                 msg = 'Gimme a real user id gdi.'
         await client.send_message(message.channel, msg)
@@ -65,7 +78,7 @@ async def on_message(message):
             else:
                 x = randint(0, len(rand_names) - 1)
                 y = randint(20, 40)
-                user_data[author].souls += y
+                user_data[author].cloth += y
                 msg = rand_names[x].rstrip('\n') + ' has given you ' + str(y) + ' cloth.'
         else:
             msg = "You get tired of searching so much. You need to wait " + \
@@ -333,9 +346,13 @@ async def initialize():
     lines = data.readlines()
     for line in lines:
         vals = line.split()
-        vals.extend(['|'])
+
+        # CHANGE THIS WHEN ADDING NEW ITEMS
+        vals.extend(['0']) #to either 0 or |
+        ###################################
+
         user_data[vals[0]] = User(int(vals[1]), vals[2], vals[3], vals[4], \
-            vals[5], vals[6], vals[7])
+            vals[5], vals[6], vals[7], vals[8], int(vals[9]))
     data.close()
 
     # create all user-specific vars: user_comm{str:str}, balance{str:int}

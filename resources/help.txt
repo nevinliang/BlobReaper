@@ -18,6 +18,12 @@ Description: Check your sack of souls
 Usage: `;souls`
 Cooldown: 0 seconds
 
+**;cloth**
+Description: Check how much cloth you have
+Usage: `;cloth`
+Cooldown: 0 seconds
+
+
 **;daily**
 Description: A small sack of soul stones for you
 Usage: `;daily`
