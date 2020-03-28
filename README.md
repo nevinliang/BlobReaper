@@ -1,32 +1,26 @@
 # The Blob Reaper
-*discord bot*
 
-CREATOR:          nzwl702
+CREATOR:          nzwl702 and Eddie
 
 BOT_NAME:         Blob Reaper
-
-LAST_UPDATE:      3.27.2020 12:39pm
 
 DESCRIPTION:      incremental + virtual currency bot
 
 UPDATES:
-- REVAMPED THE THEME OF THE BOT. SOUL STONES INSTEAD OF waffles
-- BIG CHANGES to command terms.
+- 3.28.20 REVAMPED THE THEME OF THE BOT. SOUL STONES INSTEAD OF waffles
+- 3.28.20 BIG CHANGES to command terms.
+- 3.28.20 added cloth currency as well (cloth makes you able to hold more stones)
+  - changed search function to mean cloth instead of soul stones.
+- 3.28.20 sharing function for stones
 
 TODO:
-- change search function to mean cloth instead of soul stones.
+- add bank/wallet instead of combining them. :)
+- *shop/inv* :)))))
 
 LATER:
-- add bank/wallet instead of combining them.
-- *shop/inv*
-- shop contains different items for a soul stone incremental game
-- inv describes levels of each shop item (limited to 1 -eddie)
+- shop contains different items for a soul stone incremental game :)
+- inv describes levels of each shop item (limited to 1 -eddie) :)
   - upgrades for each shop item
-
-- begging/searching/etc. earns cloth
-- working earns gems
-- sharing function for gems
-- bet gems but lose a lot?
-- cloth makes bank sack bigger (a lot bigger)
-- robbing steals a lot of soul stones
-- shop items that generate soul stones
+- cloth makes bank sack bigger (a lot bigger) :|
+- robbing steals a lot of soul stones :|
+- shop items that generate soul stones :)
