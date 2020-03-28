@@ -1,14 +1,17 @@
 class User:
-    def __init__(self, money=0, daily='|', weekly='|', beg='|', bet='|', work='|', snatch='|'):
-        self.money = money
+    def __init__(self, souls=0, daily='|', weekly='|', search='|', gamble='|', sacrifice='|', snatch='|', share='|'):
+        self.souls = souls
 
         # these are all times
         self.daily = daily
         self.weekly = weekly
-        self.beg = beg
-        self.bet = bet
-        self.work = work
+        self.search = search
+        self.gamble = gamble
+        self.sacrifice = sacrifice
         self.snatch = snatch
+        self.share = share
 
     def __str__(self):
-        return str(self.money) + " " + self.daily + " " + self.weekly + " " + self.beg + " " + self.bet + " " + self.work + " " + self.snatch
+        return str(self.souls) + " " + self.daily + " " + self.weekly + " " + \
+            self.search + " " + self.gamble + " " + self.sacrifice + " " + \
+            self.snatch + " " + self.share

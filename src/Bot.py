@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 
-TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.Xn6Fqg.lNXbZx4KB2beGG4q66aGaQxM1wc'
+TOKEN = ''
 
 client = discord.Client()
 
@@ -34,158 +34,253 @@ async def on_message(message):
         msg = 'Sup {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'waffles', message.content):
-        if len(message.content) <= len(prefix) + 8:
-            msg = 'Ur balance is ' + str(user_data[author].money) + ' waffles. :waffle:'
+    if single_command(author, 'souls', message.content):
+        if len(message.content) <= len(prefix) + 6:
+            msg = 'You have ' + str(user_data[author].souls) + ' soul stones.'
         else:
-            tagger = str(message.content[len(prefix) + 11:-1])
+            tagger = str(message.content[len(prefix) + 9:-1])
             if id_validator(tagger):
-                msg = 'Their balance is ' + str(user_data[tagger].money) + ' waffles. :waffle:'
+                msg = 'They have ' + str(user_data[tagger].souls) + ' soul stones.'
             else:
                 msg = 'Gimme a real user id gdi.'
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'beg', message.content):
+    if single_command(author, 'search', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
-        if user_data[author].beg == "|":
+        if user_data[author].search == "|":
             ok = 1
         else:
-            lasttime = datetime.strptime(user_data[author].beg, '%Y-%m-%d/%H:%M:%S')
+            lasttime = datetime.strptime(user_data[author].search, '%Y-%m-%d/%H:%M:%S')
             diff = (nowtime - lasttime).total_seconds()
             if diff >= 30:
                 ok = 1
             else:
                 ok = 0
         if ok == 1:
-            user_data[author].beg = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
+            user_data[author].search = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
             earn = randint(0, 4)
             if earn == 0:
                 msg = 'No. Just...no.'
             else:
                 x = randint(0, len(rand_names) - 1)
                 y = randint(20, 40)
-                user_data[author].money += y
-                msg = rand_names[x].rstrip('\n') + ' has given you ' + str(y) + ' waffles.'
-
+                user_data[author].souls += y
+                msg = rand_names[x].rstrip('\n') + ' has given you ' + str(y) + ' cloth.'
         else:
-            msg = "You cant beg that much. Stop begging. You need to wait " + \
-                str(30 - int(diff)) + " more seconds"
+            msg = "You get tired of searching so much. You need to wait " + \
+                str(30 - int(diff)) + " more seconds before you can search again."
         await client.send_message(message.channel, msg)
 
-    if double_command(author, 'work', message.content):
+    if double_command(author, 'sacrifice', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
-        if user_data[author].work == "|" or user_comm[author] == 'work':
+        if user_data[author].sacrifice == "|" or user_comm[author] == 'sacrifice':
             ok = 1
         else:
-            lasttime = datetime.strptime(user_data[author].work, '%Y-%m-%d/%H:%M:%S')
+            lasttime = datetime.strptime(user_data[author].sacrifice, '%Y-%m-%d/%H:%M:%S')
             diff = (nowtime - lasttime).total_seconds()
-            if diff >= 1800:
+            if diff >= 600:
                 ok = 1
             else:
                 ok = 0
         if ok == 1:
             if user_comm[author] == '':
                 # uses randomized sentence from file
-                sentences = open("sentences.txt", "r")
+                sentences = open("resources/sentences.txt", "r")
                 lines = sentences.readlines()
+                sentences.close()
                 rint = randint(0, len(lines) - 1)
                 global_temp[author] = memeString(lines[rint].rstrip('\n'))
                 msg = 'Retype the following line in lowercase: `' + global_temp[author] + '`'
-                user_comm[author] = 'work'
+                user_comm[author] = 'sacrifice'
             else:
-                user_data[author].work = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
+                user_data[author].sacrifice = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
                 if message.content == global_temp[author].lower():
                     rint = randint(100, 200)
-                    msg = 'Correct! You  have earned `' + str(rint) + '` waffles. :waffle:'
-                    user_data[author].money += rint
+                    msg = 'Correct! You  have earned `' + str(rint) + '` soul stones.'
+                    user_data[author].souls += rint
                 else:
-                    msg = 'Incorrect! :rage: You have eaned NOOOO WAFFLES.'
+                    msg = 'Incorrect! :rage: You have eaned NOOO soul stones.'
                 user_comm[author] = ''
                 global_temp[author] = ""
         else:
-            msg = "You have to wait a little before working\n" + \
-            str(int((1800 - diff)/60)) + " more minutes until you can work again"
+            msg = "You have to wait a little before sacrificing\n" + \
+                str((600 - int(diff)) // 60) + " minutes " + str(int(600 - diff) % 60) + \
+                " seconds until you can kill again"
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'bet', message.content):
+    if single_command(author, 'gamble', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
-        if user_data[author].bet == "|":
+        if user_data[author].gamble == "|":
             ok = 1
         else:
-            lasttime = datetime.strptime(user_data[author].bet, '%Y-%m-%d/%H:%M:%S')
+            lasttime = datetime.strptime(user_data[author].gamble, '%Y-%m-%d/%H:%M:%S')
             diff = (nowtime - lasttime).total_seconds()
-            if diff >= 10:
+            if diff >= 5:
                 ok = 1
             else:
                 ok = 0
         if ok == 1:
-            user_data[author].bet = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
-            amt = message.content[len(prefix) + 4:]
+            user_data[author].gamble = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
+            amt = message.content[len(prefix) + 7:]
             color=0x301934
             if not amt.isdigit() and amt != 'all':
                 msg = 'Bruh. Enter a freaking value gdi.'
             else:
                 if amt == 'all':
-                    amt = user_data[author].money
+                    amt = user_data[author].souls
                 else:
                     amt = int(amt)
-                if user_data[author].money >= amt:
+                if user_data[author].souls >= amt:
                     rint = randint(0, 14)
                     rint2 = randint(0, 14)
                     if rint > rint2:
                         rint3 = randint(20, 150)
                         amt = int(amt * rint3 / 100) + 1
-                        msg = 'Nice!\nYou rolled a `' + str(rint) + '` and WR rolled a `' \
+                        msg = 'Nice!\nYou rolled a `' + str(rint) + '` and BR rolled a `' \
                             + str(rint2) + '`.\nYou have earned `' + str(rint3) + \
-                                '%` of your bet.\n`' + str(amt) + '` waffles for you!'
-                        user_data[author].money += amt
+                                '%` of your bet.\n`' + str(amt) + '` soul stones for you!'
+                        user_data[author].souls += amt
                         color = 0x00FF00
                     else:
                         msg = 'Sucks to be you. \n You rolled a `' + str(rint) + \
-                            '` and WR rolled a `' + str(rint2) + \
-                                '`\nYou just lost everything you bet.'
-                        user_data[author].money -= amt
+                            '` and BR rolled a `' + str(rint2) + \
+                                '`\nYou just lost everything you gambled.'
+                        user_data[author].souls -= amt
                         color = 0xFF0000
                 else:
                     msg = "Wtaf is wrong with your math. You can't bet more " \
                         "than you have."
-            embed = discord.Embed(title="Betting Arena", description=msg, color=color)
+            embed = discord.Embed(title="Gambling Arena", description=msg, color=color)
             await client.send_message(message.channel, embed=embed)
         else:
-            msg = "Dont bet too fast lmao \n" + str(10 - int(diff)) + \
-                " more seconds until you can bet again"
+            msg = "Dont gamble too fast lmao \n" + str(5 - int(diff)) + \
+                " more seconds until you can gamble again"
             await client.send_message(message.channel, msg)
 
+    if single_command(author, 'weekly', message.content):
+        nowtime = datetime.now().replace(microsecond=0)
+        ok = 0
+        if user_data[author].weekly == "|":
+            ok = 1
+        else:
+            lasttime = datetime.strptime(user_data[author].weekly, '%Y-%m-%d/%H:%M:%S')
+            diff = (nowtime - lasttime).total_seconds()
+            if diff >= 604800:
+                ok = 1
+            else:
+                ok = 0
+        if ok == 1:
+            user_data[author].weekly = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
+            msg = "Here are your weekly 2500 soul stones!"
+            user_data[author].souls += 2500
+        else:
+            rsec = 604800 - int(diff)
+            rmin = (rsec // 60) % 60
+            rhr = (rsec // 3600) % 24
+            rday = (rsec // 86400)
+            rsec = rsec % 60
+            msg = "Hasnt been a week yet :/ \n" + str(rday) + "days, " + str(rhr) + \
+                "hrs, " + str(rmin) + "mins, " + str(rsec) + \
+                "seconds until you can get your weekly soul stones again"
+        await client.send_message(message.channel, msg)
+
+    if single_command(author, 'daily', message.content):
+        nowtime = datetime.now().replace(microsecond=0)
+        ok = 0
+        if user_data[author].daily == "|":
+            ok = 1
+        else:
+            lasttime = datetime.strptime(user_data[author].daily, '%Y-%m-%d/%H:%M:%S')
+            diff = (nowtime - lasttime).total_seconds()
+            if diff >= 86400:
+                ok = 1
+            else:
+                ok = 0
+        if ok == 1:
+            user_data[author].daily = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
+            msg = "Here are your daily 500 soul stones!"
+            user_data[author].souls += 500
+        else:
+            rsec = 86400 - int(diff)
+            rmin = (rsec // 60) % 60
+            rhr = (rsec // 3600)
+            rsec = rsec % 60
+            msg = "Hasnt been a day yet :/ \n" + str(rhr) + "hrs, " + str(rmin) + \
+                "mins, " + str(rsec) + "seconds until you can get your daily soul stones again"
+        await client.send_message(message.channel, msg)
 
     if single_command(author, 'snatch', message.content):
         tagger = str(message.content[len(prefix) + 10:-1])
         if id_validator(tagger):
-            if user_data[author].money < 150:
+            if user_data[author].souls < 150:
                 msg = 'Yo, u need at least 150 waffles to snatch!\n' \
                     'How tf r u gunna pay off the fine if ur unsuccessful :/'
-            elif user_data[tagger].money < 100:
+            elif user_data[tagger].souls < 100:
                 msg = 'Nah, your target only has 100 waffles. :disappointed: ' \
                     'No need to steal from such a poor noob.'
             else:
                 rint = randint(0, 99)
                 if rint < 40:
                     rint = randint(5, 15)
-                    amt = int(rint / 100 * user_data[tagger].money)
-                    user_data[tagger].money -= amt
-                    user_data[author].money += amt
+                    amt = int(rint / 100 * user_data[tagger].souls)
+                    user_data[tagger].souls -= amt
+                    user_data[author].souls += amt
                     msg = 'Lit. Your hands are fast asf. Youve snatched ' + \
                         str(amt) + ' waffles. :waffle:'
                 else:
                     msg = 'Sucks to be slo. Youv lost 350 waffles to your ' \
                         'target as a result. :smiling_imp:'
-                    user_data[author].money -= 350
-                    user_data[tagger].money += 350
+                    user_data[author].souls -= 350
+                    user_data[tagger].souls += 350
         else:
             msg = 'I stg. R u stupid. U cant rob someone if they dont exist :/' \
                 '\nTag someone real smh.'
+        await client.send_message(message.channel, msg)
+
+    if single_command(author, 'help', message.content):
+        sentences = open("resources/help.txt", "r")
+        lines = sentences.readlines()
+        msg = "".join(lines)
+        embed = discord.Embed(title="Blob Reaper Help", description=msg, color=0x000000)
+        await client.send_message(message.channel, embed=embed)
+
+    if single_command(author, 'share', message.content):
+        nowtime = datetime.now().replace(microsecond=0)
+        ok = 0
+        if user_data[author].share == "|":
+            ok = 1
+        else:
+            lasttime = datetime.strptime(user_data[author].share, '%Y-%m-%d/%H:%M:%S')
+            diff = (nowtime - lasttime).total_seconds()
+            if diff >= 60:
+                ok = 1
+            else:
+                ok = 0
+        if ok == 1:
+            user_data[author].share = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
+            # ;share @eddie 1000
+            terms = message.content.split()
+            val = terms[2]
+            tagger = (terms[1])[3:-1]
+            if id_validator(tagger):
+                if not val.isdigit():
+                    msg = 'Bruh. Enter a freaking value gdi.'
+                else:
+                    val = int(val)
+                    if user_data[author].souls <= val:
+                        msg = 'Ur actually so dumb. You cant share more than you have.'
+                    else:
+                        user_data[author].souls -= val
+                        user_data[tagger].souls += val
+                        msg = 'You have shared ' + str(val) + ' souls with them'
+            else:
+                msg = 'Gimme a real user id gdi.'
+        else:
+            msg = "Stop sharing so fast. You need to wait " + \
+                str(60 - int(diff)) + " more seconds before you can share again."
         await client.send_message(message.channel, msg)
 
     # occurs when owner stops bot (testing purposes)
@@ -205,10 +300,14 @@ def no_command(author, keyword):
     return user_comm[author] == keyword
 
 def single_command(author, keyword, message):
+    if author not in user_comm.keys():
+        return False
     return (user_comm[author] == keyword or user_comm[author] == '') \
         and message.lower().startswith(prefix + keyword)
 
 def double_command(author, keyword, message):
+    if author not in user_comm.keys():
+        return False
     return user_comm[author] == '' and message.lower().startswith(prefix + keyword) \
         or user_comm[author] == keyword
 
@@ -225,11 +324,11 @@ def memeString(s):
 # initializer
 async def initialize():
     sys.path.insert(0, 'resources')
-    # HEREEEE FILE PATHS    NOT WORKING YET
+
     global user_comm
     await client.wait_until_ready()
     print('loading initial data...')
-    # read in money values for balance{str:int}
+    # read in resource values
     data = open("resources/users.txt", "r")
     lines = data.readlines()
     for line in lines:
@@ -251,6 +350,8 @@ async def initialize():
     lines = names.readlines()
     for line in lines:
         rand_names.append(line)
+    names.close()
+
     print('initialization complete\n-------\n')
 
 def save_data():
