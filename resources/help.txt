@@ -27,3 +27,8 @@ Cooldown: 86040s / 24h / 1 day
 Description: Collect your big box of souls stones
 Usage: `;weekly`
 Cooldown: 604800s / 168h / 7 days / 1 week
+
+**;share**
+Description: Give your friends some stones
+Usage: `:share`
+Cooldown: 60s / 1m

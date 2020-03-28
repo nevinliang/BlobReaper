@@ -182,9 +182,9 @@ async def on_message(message):
             rhr = (rsec // 3600) % 24
             rday = (rsec // 86400)
             rsec = rsec % 60
-            msg = "Hasnt been a week yet :/ \n" + str(rday) + "days, " + str(rhr) + \
-                "hrs, " + str(rmin) + "mins, " + str(rsec) + \
-                "seconds until you can get your weekly soul stones again"
+            msg = "Hasnt been a week yet :/ \n" + str(rday) + " days, " + str(rhr) + \
+                " hrs, " + str(rmin) + " mins, " + str(rsec) + \
+                " seconds until you can get your weekly soul stones again"
         await client.send_message(message.channel, msg)
 
     if single_command(author, 'daily', message.content):
@@ -208,8 +208,8 @@ async def on_message(message):
             rmin = (rsec // 60) % 60
             rhr = (rsec // 3600)
             rsec = rsec % 60
-            msg = "Hasnt been a day yet :/ \n" + str(rhr) + "hrs, " + str(rmin) + \
-                "mins, " + str(rsec) + "seconds until you can get your daily soul stones again"
+            msg = "Hasnt been a day yet :/ \n" + str(rhr) + " hrs, " + str(rmin) + \
+                " mins, " + str(rsec) + " seconds until you can get your daily soul stones again"
         await client.send_message(message.channel, msg)
 
     if single_command(author, 'snatch', message.content):
