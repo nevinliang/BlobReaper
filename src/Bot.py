@@ -8,7 +8,7 @@ from random import randint
 from datetime import datetime
 
 # change before pushing!!!
-TOKEN = ''
+TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.XoEGpQ.zCOuLQlEjEJLl3haNzibppJ8t_8'
 
 client = discord.Client()
 
@@ -54,7 +54,27 @@ async def on_message(message):
                 await client.send_message(message.channel, embed=embed)
             else:
                 msg = 'Gimme a real user id gdi.'
-                await client.send_message(message.channel, msg=msg)
+                await client.send_message(message.channel, msg)
+
+    if single_command(author, 'stash', message.content):
+        # ;dep 1000
+        shit = message.content.split()
+        shit.append(".")
+        amt = shit[1]
+        msg = ""
+        if not amt.isdigit() and amt != 'max':
+            msg = 'Smh. Enter either a number or `max`.'
+        else:
+            max = user_data[author].souls[2] - user_data[author].souls[1]
+            if amt == 'max':
+                amt = max
+            amt = int(amt)
+            if amt > max:
+                msg = 'Bruh you cant stash that much your sac is too small :eyes:'
+            else:
+                user_data[author].souls[1] += amt
+                msg = 'You have stashed ' + str(amt) + ' soul stones.'
+        await client.send_message(message.channel, msg)
 
     if single_command(author, 'cloth', message.content):
         # ;cloth <@!asldfjalskdfj>
@@ -265,9 +285,17 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
     if single_command(author, 'help', message.content):
-        sentences = open("resources/help.txt", "r")
-        lines = sentences.readlines()
-        msg = "".join(lines)
+        shit = message.content.split()
+        if len(shit) == 1:
+            msg = "`;help mod` - help with moderation commands\n" \
+            "`;help fun` - help with game commands"
+        elif len(shit) == 2:
+            if shit[1] == 'mod':
+                sentences = open("resources/helpmod.txt", "r")
+            elif shit[1] == 'fun':
+                sentences = open("resources/helpfun.txt", "r")
+            lines = sentences.readlines()
+            msg = "".join(lines)
         embed = discord.Embed(title="Blob Reaper Help", description=msg, color=0x000000)
         await client.send_message(message.channel, embed=embed)
 
@@ -309,7 +337,10 @@ async def on_message(message):
 
     if single_command(author, 'use', message.content):
         shit = message.content.split()
-        # ;use cloth
+        # ;use cloth 10
+        shit = message.content.split()
+        msg = user_data[author].use(shit[1:])
+        await client.send_message(message.channel, msg)
 
 
     # occurs when owner stops bot (testing purposes)

@@ -1,0 +1,8 @@
+`;sacrifice` - Reap some humans and take their souls
+`;search` - Look around, u might find something valuable
+`;gamble <amount>` - A way to lose ur soul stones
+`;souls` - Count the stones u have in your pocket and sack
+`;daily` - A small sack of soul stones for you
+`;weekly` - Collect your big box of souls stones
+`;use <item>` - Use an item from your inventory
+`;stash <amount>` - Store your soul stones in your sack

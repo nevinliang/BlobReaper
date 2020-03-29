@@ -1,0 +1,15 @@
+`;ban <@user> <reason>` - Bans a member from the server.
+`;kick <@user>` - Kicks a user from the server.
+`;mute <@user>` - Mutes a user in the server.
+`;unmute <@user>` - Unmutes a user in the server.
+`;invite` - Generates the invite link for the bot.
+`;say <message>` - Broadcasts a message in the channel.
+`;addrole <@user> <role>` - Adds a role to a User.
+`;removerole <@user> <role>` - Removes a role from a User
+`;softban <@user> <reason>` - Soft bans a user from the server.
+`;ping` - Gets the ping of the server and bot.
+`;suggest <suggestion>` - Logs a suggestion to the server.
+`;status` - Changes the status of the bot.
+`;warn <@user>` - Warns a user.
+`;warnings <@user>` - Displays all the past warnings of a user.
+`;clearwarnings <@user>` - Clears all the warnings of a user.

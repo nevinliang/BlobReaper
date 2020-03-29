@@ -25,3 +25,4 @@ LATER:
 - cloth makes bank sack bigger (a lot bigger) :|
 - robbing steals a lot of soul stones :|
 - shop items that generate soul stones :)
+- make own levelling function and take away botghosts
