@@ -16,6 +16,7 @@ UPDATES:
 
 TODO:
 - *shop/inv* :)))))
+- add search function for cloth and stones
 
 LATER:
 - shop contains different items for a soul stone incremental game :)
