@@ -8,7 +8,7 @@ from random import randint
 from datetime import datetime
 
 # change before pushing!!!
-TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.Xn95vw.flZJJrGbze6VWbC3Wso3msZGKJ8'
+TOKEN = ''
 
 client = discord.Client()
 
@@ -37,14 +37,24 @@ async def on_message(message):
 
     if single_command(author, 'souls', message.content):
         if len(message.content) <= len(prefix) + 5:
-            msg = 'You have ' + str(user_data[author].souls) + ' soul stones.'
+            msg = 'Pocket: ``' + str(user_data[author].souls[0]) + '`` soul stones\n'
+            msg += 'Sack: ``' + str(user_data[author].souls[1]) + '``/``' + \
+                str(user_data[author].souls[2]) + '`` soul stones.'
+            title = "Your Wealth"
+            embed = discord.Embed(title=title, description=msg, color=0x7fffd4)
+            await client.send_message(message.channel, embed=embed)
         else:
             tagger = str(message.content[len(prefix) + 9:-1])
             if id_validator(tagger):
-                msg = 'They have ' + str(user_data[tagger].souls) + ' soul stones.'
+                msg = 'Pocket: ``' + str(user_data[tagger].souls[0]) + '`` soul stones\n'
+                msg += 'Sack: ``' + str(user_data[tagger].souls[1]) + '``/``' + \
+                    str(user_data[tagger].souls[2]) + '`` soul stones.'
+                title = "Their Wealth"
+                embed = discord.Embed(title=title, description=msg, color=0x7fffd4)
+                await client.send_message(message.channel, embed=embed)
             else:
                 msg = 'Gimme a real user id gdi.'
-        await client.send_message(message.channel, msg)
+                await client.send_message(message.channel, msg=msg)
 
     if single_command(author, 'cloth', message.content):
         # ;cloth <@!asldfjalskdfj>
@@ -105,15 +115,15 @@ async def on_message(message):
                 lines = sentences.readlines()
                 sentences.close()
                 rint = randint(0, len(lines) - 1)
-                global_temp[author] = memeString(lines[rint].rstrip('\n'))
-                msg = 'Retype the following line in lowercase: `' + global_temp[author] + '`'
+                global_temp[author] = lines[rint].rstrip('\n')
+                msg = 'Retype the following line: `' + global_temp[author] + '`'
                 user_comm[author] = 'sacrifice'
             else:
                 user_data[author].sacrifice = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
-                if message.content == global_temp[author].lower():
+                if message.content[1:] == global_temp[author].lower()[1:]:
                     rint = randint(100, 200)
                     msg = 'Correct! You  have earned `' + str(rint) + '` soul stones.'
-                    user_data[author].souls += rint
+                    user_data[author].souls[0] += rint
                 else:
                     msg = 'Incorrect! :rage: You have eaned NOOO soul stones.'
                 user_comm[author] = ''
@@ -144,10 +154,10 @@ async def on_message(message):
                 msg = 'Bruh. Enter a freaking value gdi.'
             else:
                 if amt == 'all':
-                    amt = user_data[author].souls
+                    amt = user_data[author].souls[0]
                 else:
                     amt = int(amt)
-                if user_data[author].souls >= amt:
+                if user_data[author].souls[0] >= amt:
                     rint = randint(0, 14)
                     rint2 = randint(0, 14)
                     if rint > rint2:
@@ -156,13 +166,13 @@ async def on_message(message):
                         msg = 'Nice!\nYou rolled a `' + str(rint) + '` and BR rolled a `' \
                             + str(rint2) + '`.\nYou have earned `' + str(rint3) + \
                                 '%` of your bet.\n`' + str(amt) + '` soul stones for you!'
-                        user_data[author].souls += amt
+                        user_data[author].souls[0] += amt
                         color = 0x00FF00
                     else:
                         msg = 'Sucks to be you. \n You rolled a `' + str(rint) + \
                             '` and BR rolled a `' + str(rint2) + \
                                 '`\nYou just lost everything you gambled.'
-                        user_data[author].souls -= amt
+                        user_data[author].souls[0] -= amt
                         color = 0xFF0000
                 else:
                     msg = "Wtaf is wrong with your math. You can't bet more " \
@@ -189,7 +199,7 @@ async def on_message(message):
         if ok == 1:
             user_data[author].weekly = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
             msg = "Here are your weekly 2500 soul stones!"
-            user_data[author].souls += 2500
+            user_data[author].souls[0] += 2500
         else:
             rsec = 604800 - int(diff)
             rmin = (rsec // 60) % 60
@@ -216,7 +226,7 @@ async def on_message(message):
         if ok == 1:
             user_data[author].daily = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
             msg = "Here are your daily 500 soul stones!"
-            user_data[author].souls += 500
+            user_data[author].souls[0] += 500
         else:
             rsec = 86400 - int(diff)
             rmin = (rsec // 60) % 60
@@ -229,26 +239,26 @@ async def on_message(message):
     if single_command(author, 'snatch', message.content):
         tagger = str(message.content[len(prefix) + 10:-1])
         if id_validator(tagger):
-            if user_data[author].souls < 150:
+            if user_data[author].souls[0] < 150:
                 msg = 'Yo, u need at least 150 waffles to snatch!\n' \
                     'How tf r u gunna pay off the fine if ur unsuccessful :/'
-            elif user_data[tagger].souls < 100:
+            elif user_data[tagger].souls[0] < 100:
                 msg = 'Nah, your target only has 100 waffles. :disappointed: ' \
                     'No need to steal from such a poor noob.'
             else:
                 rint = randint(0, 99)
                 if rint < 40:
                     rint = randint(5, 15)
-                    amt = int(rint / 100 * user_data[tagger].souls)
-                    user_data[tagger].souls -= amt
-                    user_data[author].souls += amt
+                    amt = int(rint / 100 * user_data[tagger].souls[0])
+                    user_data[tagger].souls[0] -= amt
+                    user_data[author].souls[0] += amt
                     msg = 'Lit. Your hands are fast asf. Youve snatched ' + \
                         str(amt) + ' waffles. :waffle:'
                 else:
                     msg = 'Sucks to be slo. Youv lost 350 waffles to your ' \
                         'target as a result. :smiling_imp:'
-                    user_data[author].souls -= 350
-                    user_data[tagger].souls += 350
+                    user_data[author].souls[0] -= 350
+                    user_data[tagger].souls[0] += 350
         else:
             msg = 'I stg. R u stupid. U cant rob someone if they dont exist :/' \
                 '\nTag someone real smh.'
@@ -284,11 +294,11 @@ async def on_message(message):
                     msg = 'Bruh. Enter a freaking value gdi.'
                 else:
                     val = int(val)
-                    if user_data[author].souls <= val:
+                    if user_data[author].souls[0] < val:
                         msg = 'Ur actually so dumb. You cant share more than you have.'
                     else:
-                        user_data[author].souls -= val
-                        user_data[tagger].souls += val
+                        user_data[author].souls[0] -= val
+                        user_data[tagger].souls[0] += val
                         msg = 'You have shared ' + str(val) + ' souls with them'
             else:
                 msg = 'Gimme a real user id gdi.'
@@ -296,6 +306,11 @@ async def on_message(message):
             msg = "Stop sharing so fast. You need to wait " + \
                 str(60 - int(diff)) + " more seconds before you can share again."
         await client.send_message(message.channel, msg)
+
+    if single_command(author, 'use', message.content):
+        shit = message.content.split()
+        # ;use cloth
+
 
     # occurs when owner stops bot (testing purposes)
     if message.content.startswith(';end'):
@@ -346,13 +361,13 @@ async def initialize():
     data = open("resources/users.txt", "r")
     lines = data.readlines()
     for line in lines:
-        vals = line.split()
+        vals = line.split(';')
 
         # CHANGE THIS WHEN ADDING NEW ITEMS
         vals.extend(['0']) #to either 0 or |
         ###################################
 
-        user_data[vals[0]] = User(int(vals[1]), vals[2], vals[3], vals[4], \
+        user_data[vals[0]] = User(eval(vals[1]), vals[2], vals[3], vals[4], \
             vals[5], vals[6], vals[7], vals[8], int(vals[9]))
     data.close()
 
@@ -376,7 +391,7 @@ def save_data():
     # save all balances to bank
     data = open("resources/users.txt", 'w')
     for key in user_data:
-        data.write(str(key) + " " + str(user_data[key]) + "\n")
+        data.write(str(key) + ";" + str(user_data[key]) + "\n")
     data.close()
 
 @client.event

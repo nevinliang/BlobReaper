@@ -12,9 +12,9 @@ UPDATES:
 - 3.28.20 added cloth currency as well (cloth makes you able to hold more stones)
   - changed search function to mean cloth instead of soul stones.
 - 3.28.20 sharing function for stones
+- 3.28.20 added pocket and sack instead of combining them
 
 TODO:
-- add bank/wallet instead of combining them. :)
 - *shop/inv* :)))))
 
 LATER:
