@@ -6,3 +6,4 @@
 `;weekly` - Collect your big box of souls stones
 `;use <item>` - Use an item from your inventory
 `;stash <amount>` - Store your soul stones in your sack
+`;shop <page>` - Buy useful and valuable items

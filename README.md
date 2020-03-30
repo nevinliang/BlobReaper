@@ -13,16 +13,24 @@ UPDATES:
   - changed search function to mean cloth instead of soul stones.
 - 3.28.20 sharing function for stones
 - 3.28.20 added pocket and sack instead of combining them
+- 3.29.20 cloth makes bank sack bigger 20x the amt of cloth used
+- 3.29.20 help function revamped
+- 3.29.20 added invite link
 
 TODO:
 - *shop/inv* :)))))
+  - increases souls u get from sac
+  - an item that gives u souls every second/minute/hour
+  - consumables
+  - collectables
 - add search function for cloth and stones
+- withdraw function
 
 LATER:
 - shop contains different items for a soul stone incremental game :)
 - inv describes levels of each shop item (limited to 1 -eddie) :)
   - upgrades for each shop item
-- cloth makes bank sack bigger (a lot bigger) :|
 - robbing steals a lot of soul stones :|
 - shop items that generate soul stones :)
 - make own levelling function and take away botghosts
+-  more than one use for cloth, it shud also increase defense or smth, like if u use it to make ur cloak thicker

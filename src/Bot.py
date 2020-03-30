@@ -8,7 +8,7 @@ from random import randint
 from datetime import datetime
 
 # change before pushing!!!
-TOKEN = 'Njg3NDc2NzgzMjk3NDYyMzEy.XoEGpQ.zCOuLQlEjEJLl3haNzibppJ8t_8'
+TOKEN = ''
 
 client = discord.Client()
 
@@ -31,6 +31,13 @@ async def on_message(message):
     # simplicity
     author = message.author.id
 
+    if single_command(author, 'invite', message.content):
+        embed = discord.Embed(title='BLOB REAPER INVITE LINK',
+                       url='https://discordapp.com/api/oauth2/authorize?client_id=687476783297462312&permissions=8&scope=bot',
+                       description='DM an admin for premium!')
+        embed.set_image(url='https://i.ibb.co/YLn9RRL/Blob-Reaper-copy2.png')
+        await client.send_message(message.channel, embed=embed)
+
     if single_command(author, 'hello', message.content):
         msg = 'Sup {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
@@ -41,7 +48,7 @@ async def on_message(message):
             msg += 'Sack: ``' + str(user_data[author].souls[1]) + '``/``' + \
                 str(user_data[author].souls[2]) + '`` soul stones.'
             title = "Your Wealth"
-            embed = discord.Embed(title=title, description=msg, color=0x7fffd4)
+            embed = discord.Embed(title=title, description=msg, color=0xffd700)
             await client.send_message(message.channel, embed=embed)
         else:
             tagger = str(message.content[len(prefix) + 9:-1])
@@ -50,7 +57,7 @@ async def on_message(message):
                 msg += 'Sack: ``' + str(user_data[tagger].souls[1]) + '``/``' + \
                     str(user_data[tagger].souls[2]) + '`` soul stones.'
                 title = "Their Wealth"
-                embed = discord.Embed(title=title, description=msg, color=0x7fffd4)
+                embed = discord.Embed(title=title, description=msg, color=0xffd700)
                 await client.send_message(message.channel, embed=embed)
             else:
                 msg = 'Gimme a real user id gdi.'
@@ -88,6 +95,38 @@ async def on_message(message):
             else:
                 msg = 'Gimme a real user id gdi.'
         await client.send_message(message.channel, msg)
+
+    if single_command(author, 'inv', message.content):
+        if len(message.content) <= len(prefix) + 7:
+            title = "Your Stuff"
+            msg = user_data[author].listinv()
+            embed = discord.Embed(title=title, description=msg, color=0x6a0dad)
+            await client.send_message(message.channel, embed=embed)
+        else:
+            bfs = message.content.split()
+            tagger = str(bfs[1][3:-1])
+            if id_validator(tagger):
+                title = "Their Stuff"
+                msg = user_data[tagger].listinv()
+                embed = discord.Embed(title=title, description=msg, color=0x6a0dad)
+                await client.send_message(message.channel, embed=embed)
+            else:
+                msg = 'Gimme a real user id gdi.'
+                await client.send_message(message.channel, msg)
+
+    if single_command(author, 'shop', message.content):
+        shit = message.content.split()
+        if len(shit) == 1:
+            # display shop
+            store = open("resources/shop.txt", "r")
+            lines = store.readlines()
+            msg = "".join(lines)
+            embed = discord.Embed(title="Reaper Shop", description=msg, color=0x7fffd4)
+            await client.send_message(message.channel, embed=embed)
+        elif len(shit) == 2:
+            # ;shop scythe
+            msg = user_data[author].buy('shop', shit[1:])
+            await client.send_message(message.channel, msg)
 
     if single_command(author, 'search', message.content):
         nowtime = datetime.now().replace(microsecond=0)
@@ -186,13 +225,13 @@ async def on_message(message):
                         msg = 'Nice!\nYou rolled a `' + str(rint) + '` and BR rolled a `' \
                             + str(rint2) + '`.\nYou have earned `' + str(rint3) + \
                                 '%` of your bet.\n`' + str(amt) + '` soul stones for you!'
-                        user_data[author].souls[0] += amt
+                        (user_data[author].souls)[0] += amt
                         color = 0x00FF00
                     else:
                         msg = 'Sucks to be you. \n You rolled a `' + str(rint) + \
                             '` and BR rolled a `' + str(rint2) + \
                                 '`\nYou just lost everything you gambled.'
-                        user_data[author].souls[0] -= amt
+                        (user_data[author].souls)[0] -= amt
                         color = 0xFF0000
                 else:
                     msg = "Wtaf is wrong with your math. You can't bet more " \
@@ -395,11 +434,12 @@ async def initialize():
         vals = line.split(';')
 
         # CHANGE THIS WHEN ADDING NEW ITEMS
-        vals.extend(['0']) #to either 0 or |
+        vals.append(['0', '0', '0']) #to either 0 or |
         ###################################
 
         user_data[vals[0]] = User(eval(vals[1]), vals[2], vals[3], vals[4], \
-            vals[5], vals[6], vals[7], vals[8], int(vals[9]))
+            vals[5], vals[6], vals[7], vals[8], int(vals[9]), eval(vals[10]))
+        print(eval(vals[10]))
     data.close()
 
     # create all user-specific vars: user_comm{str:str}, balance{str:int}
