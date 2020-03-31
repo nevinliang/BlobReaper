@@ -7,7 +7,7 @@ from random import seed
 from random import randint
 from datetime import datetime
 
-# change before pushing!!!
+# change before pushing
 TOKEN = ''
 
 client = discord.Client()
