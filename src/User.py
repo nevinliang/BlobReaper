@@ -1,4 +1,4 @@
-from Inventory import Inventory
+from Items import Items
 
 class User:
 
@@ -10,7 +10,7 @@ class User:
         self.souls = souls
         self.cloth = cloth
         self.inv = inv
-        
+
         # these are all times
         self.daily = daily
         self.weekly = weekly
@@ -40,38 +40,36 @@ class User:
                     return "Dude i stg. Enter a number omg."
 
     def listinv(self):
-        ret_str = ""
-        if self.inv[0] != 0:
-            ret_str += 'Scythe: Level ' + str(self.inv[0]) + ' ' + Inventory.scythe[self.inv[0]] + '\n'
-        if self.inv[1] != 0:
-            ret_str += 'Shrine: Level ' + str(self.inv[1]) + ' ' + Inventory.shrine[self.inv[1]] + '\n'
-        if self.inv[2] != 0:
-            ret_str += 'Forge: Level ' + str(self.inv[2]) + ' ' + Inventory.forge[self.inv[2]] + '\n'
-        if ret_str == "":
-            ret_str += "You're a noob reaper. You have nothing."
-        return ret_str
+        return Items.listinv(self.inv[0], self.inv[1], self.inv[2])
 
     def buy(self, comms):
-        if comms[0] in items.keys():
-            if (self.inv)[items[comms[0]]] != 0:
-                return 'You already have this item. Only 1 allowed.'
-            else:
-                # buy it
-                pass
+        item = comms[0]
+        if len(comms) > 1:
+            num = comms[1]
+        if item in Items.items.keys():
+            # if item is a tool
+            if Item.items[item][1][0] == 'tool':
+                if (self.inv)[Items.items[item][0]] != 0:
+                    return 'You already have this item. Only 1 allowed.'
+
         else:
             return "That item doesn't exist dumbass."
 
-    def upgrade(self, comms):
-        if comms in items.keys():
-            item = items[comms]
-            if self.inv[items[item]] == 0:
-                return "Lmao stop cheating you don't have this item"
-            elif self.inv[items[item]] == 5:
-                return "Oops, you've already upgraded this to the max!"
+    def upgrade(self, item):
+        # ;upgrade scythe
+        if item in items.keys():
+            if Item.items[item][1][0] == 'tool':
+                if self.inv[items[item][0]] == 0:
+                    return "Lmao stop cheating you don't have this item"
+                elif self.inv[items[item][0]] == 5:
+                    return "Oops, you've already upgraded this to the max!"
+                else:
+                    self.inv[items[item]] += 1
+                    # pay for the item
+                    # HEREEEE
+                    return "You have upgraded your " + item + "."
             else:
-                self.inv[items[item]] += 1
-                # pay for the item
-                return "You have upgraded your " + comms + "."
+                return 'That item cannot be upgraded. :('
         else:
             return "That item doesn't exist..."
 

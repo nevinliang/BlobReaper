@@ -31,6 +31,12 @@ async def on_message(message):
     # simplicity
     author = message.author.id
 
+    if (message.content).lower() == 'f':
+        await client.send_message(message.channel, "F")
+
+    if (message.content).lower() == 'no u' or (message.content).lower() == 'no you':
+        await client.send_message(message.channel, "No u")
+
     if single_command(author, 'invite', message.content):
         embed = discord.Embed(title='BLOB REAPER INVITE LINK',
                        url='https://discordapp.com/api/oauth2/authorize?client_id=687476783297462312&permissions=8&scope=bot',
@@ -74,12 +80,15 @@ async def on_message(message):
         else:
             max = user_data[author].souls[2] - user_data[author].souls[1]
             if amt == 'max':
-                amt = max
+                amt = min(max, user_data[author].souls[0])
             amt = int(amt)
             if amt > max:
                 msg = 'Bruh you cant stash that much your sac is too small :eyes:'
+            elif amt > user_data[author].souls[0]:
+                msg = 'Stop cheating you cant stash more than you have lmao'
             else:
                 user_data[author].souls[1] += amt
+                user_data[author].souls[0] -= amt
                 msg = 'You have stashed ' + str(amt) + ' soul stones.'
         await client.send_message(message.channel, msg)
 
@@ -125,8 +134,17 @@ async def on_message(message):
             await client.send_message(message.channel, embed=embed)
         elif len(shit) == 2:
             # ;shop scythe
-            msg = user_data[author].buy('shop', shit[1:])
-            await client.send_message(message.channel, msg)
+            # display detailed Shop
+            # HEREEEE
+            pass
+
+    if single_command(author, 'buy', message.content):
+        shit = message.content.split()
+        if len(shit) == 1:
+            msg = 'Specify something to buy u dumbass'
+        elif len(shit) == 2:
+            msg = user_data[author].buy(shit[1:])
+        await client.send_message(message.channel, msg)
 
     if single_command(author, 'search', message.content):
         nowtime = datetime.now().replace(microsecond=0)
@@ -381,10 +399,9 @@ async def on_message(message):
         msg = user_data[author].use(shit[1:])
         await client.send_message(message.channel, msg)
 
-
     # occurs when owner stops bot (testing purposes)
     if message.content.startswith(';end'):
-        if str(message.author).startswith('nzwl702'):
+        if str(message.author).startswith('nzwl'):
             save_data()
             await client.send_message(message.channel, "The bot is now closed.")
             sys.exit(1)
@@ -410,16 +427,6 @@ def double_command(author, keyword, message):
     return user_comm[author] == '' and message.lower().startswith(prefix + keyword) \
         or user_comm[author] == keyword
 
-# useless helper functions
-def memeString(s):
-    res = ""
-    for idx in range(len(s)):
-        if not idx % 2 :
-           res = res + s[idx].upper()
-        else:
-           res = res + s[idx].lower()
-    return res
-
 # initializer
 async def initialize():
     sys.path.insert(0, 'resources')
@@ -439,7 +446,6 @@ async def initialize():
 
         user_data[vals[0]] = User(eval(vals[1]), vals[2], vals[3], vals[4], \
             vals[5], vals[6], vals[7], vals[8], int(vals[9]), eval(vals[10]))
-        print(eval(vals[10]))
     data.close()
 
     # create all user-specific vars: user_comm{str:str}, balance{str:int}
@@ -467,6 +473,7 @@ def save_data():
 
 @client.event
 async def on_ready():
+    await client.change_presence(game=discord.Game(name='with nzwl'))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)

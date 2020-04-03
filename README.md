@@ -6,7 +6,7 @@ BOT_NAME:         Blob Reaper
 
 DESCRIPTION:      incremental + virtual currency bot
 
-UPDATES:
+**UPDATES:**
 - 3.28.20 REVAMPED THE THEME OF THE BOT. SOUL STONES INSTEAD OF waffles
 - 3.28.20 BIG CHANGES to command terms.
 - 3.28.20 added cloth currency as well (cloth makes you able to hold more stones)
@@ -17,16 +17,17 @@ UPDATES:
 - 3.29.20 help function revamped
 - 3.29.20 added invite link
 
-TODO:
+**TODO:**
 - *shop/inv* :)))))
   - increases souls u get from sac
-  - an item that gives u souls every second/minute/hour
-  - consumables
-  - collectables
+  - an item that gives u souls every second/minute/hour or adds to soul getters
+    - tools***
+  - consumables***
+  - collectables***
 - add search function for cloth and stones
 - withdraw function
 
-LATER:
+**LATER:**
 - shop contains different items for a soul stone incremental game :)
 - inv describes levels of each shop item (limited to 1 -eddie) :)
   - upgrades for each shop item
@@ -34,3 +35,24 @@ LATER:
 - shop items that generate soul stones :)
 - make own levelling function and take away botghosts
 -  more than one use for cloth, it shud also increase defense or smth, like if u use it to make ur cloak thicker
+
+**INFO:**
+*Items:*
+scythe: increases the percentage stolen from any person by
+    - scythe 5%
+    - reinforced scythe 10%
+    - enhanced scythe 15%
+    - ancient scythe 20%
+    - mystical scythe 40%
+soul shrine: increases souls you get from sacrificing
+    - shrine +10 soul stones
+    - altar +25 soul stones
+    - chapel +50 soul stones
+    - temple +100 soul stones
+    - sanctum + 500 soul stones
+spirit forge: gives u souls every hour
+    - forge +25 soul stones
+    - workshop +50 soul stones
+    - assembly line +100 soul stones
+    - factory +200 soul stones
+    - vortex + 1000 soul stones
