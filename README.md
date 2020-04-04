@@ -16,6 +16,7 @@ DESCRIPTION:      incremental + virtual currency bot
 - 3.29.20 cloth makes bank sack bigger 20x the amt of cloth used
 - 3.29.20 help function revamped
 - 3.29.20 added invite link
+- 4.4.20 added shop, inventory, upgrade, depositing, random autoresponse
 
 **TODO:**
 - *shop/inv* :)))))
