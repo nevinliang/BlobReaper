@@ -7,6 +7,7 @@ import os
 from random import seed
 from random import randint
 from datetime import datetime
+from datetime import timedelta
 
 # change before pushing
 TOKEN = ''
@@ -32,24 +33,32 @@ async def on_message(message):
     # simplicity
     author = message.author.id
 
+    increment(author)
+
     if (message.content).lower() == 'f':
         await client.send_message(message.channel, "F")
 
-    if (message.content).lower() == 'no u' or (message.content).lower() == 'no you':
+
+    elif (message.content).lower() == 'no u' or (message.content).lower() == 'no you':
         await client.send_message(message.channel, "No u")
 
-    if single_command(author, 'invite', message.content):
+    elif (message.content).lower().startswith('fuck'):
+        shit = message.content.split()
+        msg = ' '.join(shit[1:]) + ' is coming :eyes:'
+        await client.send_message(message.channel, msg)
+
+    elif single_command(author, 'invite', message.content):
         embed = discord.Embed(title='BLOB REAPER INVITE LINK',
                        url='https://discordapp.com/api/oauth2/authorize?client_id=687476783297462312&permissions=8&scope=bot',
                        description='DM an admin for premium!')
         embed.set_image(url='https://i.ibb.co/YLn9RRL/Blob-Reaper-copy2.png')
         await client.send_message(message.channel, embed=embed)
 
-    if single_command(author, 'hello', message.content):
+    elif single_command(author, 'hello', message.content):
         msg = 'Sup {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'souls', message.content):
+    elif single_command(author, 'souls', message.content):
         if len(message.content) <= len(prefix) + 5:
             msg = 'Pocket: ``' + str(user_data[author].souls[0]) + '`` soul stones\n'
             msg += 'Sack: ``' + str(user_data[author].souls[1]) + '``/``' + \
@@ -70,7 +79,7 @@ async def on_message(message):
                 msg = 'Gimme a real user id gdi.'
                 await client.send_message(message.channel, msg)
 
-    if single_command(author, 'stash', message.content):
+    elif single_command(author, 'stash', message.content):
         # ;dep 1000
         shit = message.content.split()
         shit.append(".")
@@ -93,7 +102,7 @@ async def on_message(message):
                 msg = 'You have stashed ' + str(amt) + ' soul stones.'
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'with', message.content):
+    elif single_command(author, 'with', message.content):
         # ;with 1000
         shit = message.content.split()
         shit.append(".")
@@ -114,7 +123,7 @@ async def on_message(message):
                 msg = 'You have withdrawn ' + str(amt) + ' soul stones.'
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'cloth', message.content):
+    elif single_command(author, 'cloth', message.content):
         # ;cloth <@!asldfjalskdfj>
         if len(message.content) <= len(prefix) + 5:
             msg = 'You have ' + str(user_data[author].cloth) + ' pieces of cloth.'
@@ -127,7 +136,7 @@ async def on_message(message):
                 msg = 'Gimme a real user id gdi.'
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'inv', message.content):
+    elif single_command(author, 'inv', message.content):
         if len(message.content) <= len(prefix) + 7:
             title = "Your Stuff"
             msg = user_data[author].listinv()
@@ -145,7 +154,7 @@ async def on_message(message):
                 msg = 'Gimme a real user id gdi.'
                 await client.send_message(message.channel, msg)
 
-    if single_command(author, 'shop', message.content):
+    elif single_command(author, 'shop', message.content):
         shit = message.content.split()
         if len(shit) == 1:
             # display shop
@@ -156,11 +165,15 @@ async def on_message(message):
             await client.send_message(message.channel, embed=embed)
         elif len(shit) == 2:
             item = shit[1]
-            msg = Items.store_dets[item]
-            embed = discord.Embed(title=item+" details", description=msg, color=0x7fffd4)
-            await client.send_message(message.channel, embed=embed)
+            if item in Items.store_dets.keys():
+                msg = Items.store_dets[item]
+                embed = discord.Embed(title=item+" details", description=msg, color=0x7fffd4)
+                await client.send_message(message.channel, embed=embed)
+            else:
+                msg = 'You dumbass that item doesnt exist'
+                await client.send_message(message.channel, msg)
 
-    if single_command(author, 'buy', message.content):
+    elif single_command(author, 'buy', message.content):
         shit = message.content.split()
         if len(shit) == 1:
             msg = 'Specify something to buy u dumbass'
@@ -168,7 +181,7 @@ async def on_message(message):
             msg = user_data[author].buy(shit[1:])
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'upgrade', message.content):
+    elif single_command(author, 'upgrade', message.content):
         shit = message.content.split()
         if len(shit) == 1:
             msg = 'Specify something to upgrade u dumbass'
@@ -176,7 +189,7 @@ async def on_message(message):
             msg = user_data[author].upgrade(shit[1:])
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'search', message.content):
+    elif single_command(author, 'search', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
         if user_data[author].search == "|":
@@ -203,7 +216,7 @@ async def on_message(message):
                 str(30 - int(diff)) + " more seconds before you can search again."
         await client.send_message(message.channel, msg)
 
-    if double_command(author, 'sacrifice', message.content):
+    elif double_command(author, 'sacrifice', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
         if user_data[author].sacrifice == "|" or user_comm[author] == 'sacrifice':
@@ -211,7 +224,7 @@ async def on_message(message):
         else:
             lasttime = datetime.strptime(user_data[author].sacrifice, '%Y-%m-%d/%H:%M:%S')
             diff = (nowtime - lasttime).total_seconds()
-            if diff >= 600:
+            if diff >= 120:
                 ok = 1
             else:
                 ok = 0
@@ -229,19 +242,23 @@ async def on_message(message):
                 user_data[author].sacrifice = str(nowtime.strftime("%Y-%m-%d/%H:%M:%S"))
                 if message.content[1:] == global_temp[author].lower()[1:]:
                     rint = randint(100, 200)
-                    msg = 'Correct! You  have earned `' + str(rint) + '` soul stones.'
-                    user_data[author].souls[0] += rint
+                    add = ""
+                    shrinesouls = Items.eshrine[user_data[author].inv[1]]
+                    if shrinesouls != 0:
+                        add = ' + ' + str(shrinesouls)
+                    msg = 'Correct! You  have earned `' + str(rint) + add + '` soul stones.'
+                    user_data[author].souls[0] += (rint + shrinesouls)
                 else:
                     msg = 'Incorrect! :rage: You have eaned NOOO soul stones.'
                 user_comm[author] = ''
                 global_temp[author] = ""
         else:
             msg = "You have to wait a little before sacrificing\n" + \
-                str((600 - int(diff)) // 60) + " minutes " + str(int(600 - diff) % 60) + \
+                str((120 - int(diff)) // 60) + " minutes " + str(int(120 - diff) % 60) + \
                 " seconds until you can kill again"
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'gamble', message.content):
+    elif single_command(author, 'gamble', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
         if user_data[author].gamble == "|":
@@ -291,7 +308,7 @@ async def on_message(message):
                 " more seconds until you can gamble again"
             await client.send_message(message.channel, msg)
 
-    if single_command(author, 'weekly', message.content):
+    elif single_command(author, 'weekly', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
         if user_data[author].weekly == "|":
@@ -318,7 +335,7 @@ async def on_message(message):
                 " seconds until you can get your weekly soul stones again"
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'daily', message.content):
+    elif single_command(author, 'daily', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
         if user_data[author].daily == "|":
@@ -343,7 +360,7 @@ async def on_message(message):
                 " mins, " + str(rsec) + " seconds until you can get your daily soul stones again"
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'snatch', message.content):
+    elif single_command(author, 'snatch', message.content):
         tagger = str(message.content[len(prefix) + 10:-1])
         if id_validator(tagger):
             if user_data[author].souls[0] < 150:
@@ -371,7 +388,7 @@ async def on_message(message):
                 '\nTag someone real smh.'
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'help', message.content):
+    elif single_command(author, 'help', message.content):
         shit = message.content.split()
         if len(shit) == 1:
             msg = "`;help mod` - help with moderation commands\n" \
@@ -386,7 +403,7 @@ async def on_message(message):
         embed = discord.Embed(title="Blob Reaper Help", description=msg, color=0x000000)
         await client.send_message(message.channel, embed=embed)
 
-    if single_command(author, 'share', message.content):
+    elif single_command(author, 'share', message.content):
         nowtime = datetime.now().replace(microsecond=0)
         ok = 0
         if user_data[author].share == "|":
@@ -422,7 +439,7 @@ async def on_message(message):
                 str(60 - int(diff)) + " more seconds before you can share again."
         await client.send_message(message.channel, msg)
 
-    if single_command(author, 'use', message.content):
+    elif single_command(author, 'use', message.content):
         shit = message.content.split()
         # ;use cloth 10
         shit = message.content.split()
@@ -430,7 +447,7 @@ async def on_message(message):
         await client.send_message(message.channel, msg)
 
     # occurs when owner stops bot (testing purposes)
-    if message.content.startswith(';end'):
+    elif message.content == ';end':
         if str(message.author).startswith('nzwl'):
             save_data()
             await client.send_message(message.channel, "The bot is now closed.")
@@ -441,6 +458,29 @@ async def on_message(message):
 # important helper functions
 def id_validator(id):
     return id in user_data.keys()
+
+def increment(author):
+    nowtime = datetime.now().replace(microsecond=0)
+    ok = diff = lasttime = 0
+    if user_data[author].lastcomm == "|":
+        ok = 2
+    else:
+        lasttime = datetime.strptime(user_data[author].lastcomm, '%Y-%m-%d/%H:%M:%S')
+        diff = int((nowtime - lasttime).total_seconds())
+        if diff >= 3600:
+            ok = 1
+        else:
+            ok = 0
+    if ok > 0:
+        if ok == 2:
+            mult = 1
+            lasttime = nowtime
+        if ok == 1:
+            mult = diff // 3600
+            lasttime += timedelta(seconds=3600 * mult)
+        user_data[author].lastcomm = str(lasttime.strftime("%Y-%m-%d/%H:%M:%S"))
+        forgelvl = user_data[author].inv[2]
+        user_data[author].souls[0] += Items.eforge[forgelvl] * mult
 
 def no_command(author, keyword):
     return user_comm[author] == keyword
@@ -503,7 +543,7 @@ def save_data():
 
 @client.event
 async def on_ready():
-    await client.change_presence(game=discord.Game(name='with nzwl'))
+    await client.change_presence(game=discord.Game(name='with nzwl | ;help'))
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)

@@ -5,7 +5,7 @@ class User:
     items = {'scythe': 0, 'shrine': 1, 'forge': 2}
 
     def __init__(self, souls=[0, 0, 0], daily='|', weekly='|', search='|', gamble='|', \
-        sacrifice='|', snatch='|', share='|', cloth=0, inv=[0, 0, 0]):
+        sacrifice='|', snatch='|', share='|', cloth=0, inv=[0, 0, 0], lastcomm='|'):
         # souls value (pocket, sack, maxsack)
         self.souls = souls
         self.cloth = cloth
@@ -19,6 +19,8 @@ class User:
         self.sacrifice = sacrifice
         self.snatch = snatch
         self.share = share
+
+        self.lastcomm= lastcomm
 
     def use(self, comms):
         if len(comms) == 1:
@@ -76,7 +78,6 @@ class User:
                     return "Oops, you've already upgraded this to the max!"
                 else:
                     item_price = Items.items[item][2][lvl]
-                    print(item_price)
                     if self.souls[0] >= item_price:
                         self.souls[0] -= item_price
                         self.inv[Items.items[item][0]] += 1
@@ -92,4 +93,4 @@ class User:
         return str(self.souls) + ";" + self.daily + ";" + self.weekly + ";" + \
             self.search + ";" + self.gamble + ";" + self.sacrifice + ";" + \
             self.snatch + ";" + self.share + ";" + str(self.cloth) + ";" + \
-            str(self.inv)
+            str(self.inv) + ";" + self.lastcomm

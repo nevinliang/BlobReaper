@@ -9,12 +9,14 @@ class Items:
 
     pscythe = [2000, 5000, 10000, 50000, 200000]
     pshrine = [500, 1500, 4000, 8000, 25000]
+    eshrine = [0, 10, 25, 50, 100, 500]
     pforge = [1500, 4000, 10000, 25000, 150000]
+    eforge = [0, 25, 50, 100, 200, 1000]
 
     items = {'scythe': (0, scythe, pscythe), 'shrine': (1, shrine, pshrine), 'forge': (2, forge, pforge)}
 
     # include detailed shop right Here
-    store_dets = {  "scythe": """scythe: increases the percentage stolen from any person by\n
+    store_dets = {  "scythe": """scythe: increases the probability of stealing from any person by\n
                         - scythe 5%\t\t2K soul stones\n
                         - reinforced scythe 10%\t\t5K soul stones\n
                         - enhanced scythe 15%\t\t10K soul stones\n
@@ -40,11 +42,11 @@ class Items:
     def listinv(lscythe, lshrine, lforge):
         ret_str = ""
         if lscythe != 0:
-            ret_str += 'Scythe: Level ' + str(lscythe) + ' ' + Items.scythe[lscythe] + '\n'
+            ret_str += 'Scythe: Level ' + str(lscythe) + ' ' + Items.scythe[lscythe] + ' more chance for a successful steal.\n'
         if lshrine != 0:
-            ret_str += 'Shrine: Level ' + str(lshrine) + ' ' + Items.shrine[lshrine] + '\n'
+            ret_str += 'Shrine: Level ' + str(lshrine) + ' ' + Items.shrine[lshrine] + ' from sacrificing.\n'
         if lforge != 0:
-            ret_str += 'Forge: Level ' + str(lforge) + ' ' + Items.forge[lforge] + '\n'
+            ret_str += 'Forge: Level ' + str(lforge) + ' ' + Items.forge[lforge] + ' every hour.\n'
         if ret_str == "":
             ret_str += "You're a noob reaper. You have nothing."
         return ret_str
