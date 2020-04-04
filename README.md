@@ -1,6 +1,6 @@
 # The Blob Reaper
 
-CREATOR:          nzwl702 and Eddie
+CREATOR:          nzwl and Eddie
 
 BOT_NAME:         Blob Reaper
 
