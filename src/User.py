@@ -22,22 +22,20 @@ class User:
 
     def use(self, comms):
         if len(comms) == 1:
-            # single commandos like ;use bomb
-            pass
-        elif len(comms) == 2:
-            # double commands like ;use cloth 10
-            if comms[0] == 'cloth':
-                if comms[1].isdigit():
-                    val = int(comms[1])
-                    if self.cloth >= val:
-                        self.souls[2] += 20 * val
-                        self.cloth -= val
-                        return "Your sack's capacity has been increased by " + \
-                            str(val * 20) + " space."
-                    else:
-                        return "Bruh wtf you don't have that much cloth"
+            comms.append(1)
+        # double commands like ;use cloth 10
+        if comms[0] == 'cloth':
+            if comms[1].isdigit():
+                val = int(comms[1])
+                if self.cloth >= val:
+                    self.souls[2] += 20 * val
+                    self.cloth -= val
+                    return "Your sack's capacity has been increased by " + \
+                        str(val * 20) + " space."
                 else:
-                    return "Dude i stg. Enter a number omg."
+                    return "Bruh wtf you don't have that much cloth"
+            else:
+                return "Dude i stg. Enter a number omg."
 
     def listinv(self):
         return Items.listinv(self.inv[0], self.inv[1], self.inv[2])
@@ -48,26 +46,43 @@ class User:
             num = comms[1]
         if item in Items.items.keys():
             # if item is a tool
-            if Item.items[item][1][0] == 'tool':
-                if (self.inv)[Items.items[item][0]] != 0:
+            if Items.items[item][1][0] == 'tool':
+                lvl = self.inv[Items.items[item][0]]
+                if lvl != 0:
                     return 'You already have this item. Only 1 allowed.'
-
+                else:
+                    # pay for this items
+                    item_price = Items.items[item][2][lvl]
+                    if self.souls[0] >= item_price:
+                        self.souls[0] -= item_price
+                        self.inv[Items.items[item][0]] += 1
+                        return 'You have bought a ' + item
+                    else:
+                        return 'You poor noob. Get more souls to afford this.'
+            # do other types of items later
+            # pass
         else:
             return "That item doesn't exist dumbass."
 
     def upgrade(self, item):
+        item = item[0]
         # ;upgrade scythe
-        if item in items.keys():
-            if Item.items[item][1][0] == 'tool':
-                if self.inv[items[item][0]] == 0:
+        if item in Items.items.keys():
+            if Items.items[item][1][0] == 'tool':
+                lvl = self.inv[Items.items[item][0]]
+                if lvl == 0:
                     return "Lmao stop cheating you don't have this item"
-                elif self.inv[items[item][0]] == 5:
+                elif lvl == 5:
                     return "Oops, you've already upgraded this to the max!"
                 else:
-                    self.inv[items[item]] += 1
-                    # pay for the item
-                    # HEREEEE
-                    return "You have upgraded your " + item + "."
+                    item_price = Items.items[item][2][lvl]
+                    print(item_price)
+                    if self.souls[0] >= item_price:
+                        self.souls[0] -= item_price
+                        self.inv[Items.items[item][0]] += 1
+                        return 'You have upgraded your ' + item
+                    else:
+                        return 'You poor noob. Get more souls to afford this.'
             else:
                 return 'That item cannot be upgraded. :('
         else:

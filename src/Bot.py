@@ -1,6 +1,7 @@
 import discord
 import asyncio
 from User import User
+from Items import Items
 import sys
 import os
 from random import seed
@@ -92,6 +93,27 @@ async def on_message(message):
                 msg = 'You have stashed ' + str(amt) + ' soul stones.'
         await client.send_message(message.channel, msg)
 
+    if single_command(author, 'with', message.content):
+        # ;with 1000
+        shit = message.content.split()
+        shit.append(".")
+        amt = shit[1]
+        msg = ""
+        if not amt.isdigit() and amt != 'max':
+            msg = 'Smh. Enter either a number or `max`.'
+        else:
+            max = user_data[author].souls[1]
+            if amt == 'max':
+                amt = max
+            amt = int(amt)
+            if amt > max:
+                msg = 'Bruh you dont have that much >:('
+            else:
+                user_data[author].souls[1] -= amt
+                user_data[author].souls[0] += amt
+                msg = 'You have withdrawn ' + str(amt) + ' soul stones.'
+        await client.send_message(message.channel, msg)
+
     if single_command(author, 'cloth', message.content):
         # ;cloth <@!asldfjalskdfj>
         if len(message.content) <= len(prefix) + 5:
@@ -133,10 +155,10 @@ async def on_message(message):
             embed = discord.Embed(title="Reaper Shop", description=msg, color=0x7fffd4)
             await client.send_message(message.channel, embed=embed)
         elif len(shit) == 2:
-            # ;shop scythe
-            # display detailed Shop
-            # HEREEEE
-            pass
+            item = shit[1]
+            msg = Items.store_dets[item]
+            embed = discord.Embed(title=item+" details", description=msg, color=0x7fffd4)
+            await client.send_message(message.channel, embed=embed)
 
     if single_command(author, 'buy', message.content):
         shit = message.content.split()
@@ -144,6 +166,14 @@ async def on_message(message):
             msg = 'Specify something to buy u dumbass'
         elif len(shit) == 2:
             msg = user_data[author].buy(shit[1:])
+        await client.send_message(message.channel, msg)
+
+    if single_command(author, 'upgrade', message.content):
+        shit = message.content.split()
+        if len(shit) == 1:
+            msg = 'Specify something to upgrade u dumbass'
+        elif len(shit) == 2:
+            msg = user_data[author].upgrade(shit[1:])
         await client.send_message(message.channel, msg)
 
     if single_command(author, 'search', message.content):

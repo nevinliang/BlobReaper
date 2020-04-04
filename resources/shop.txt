@@ -1,4 +1,4 @@
-**Scythe** - 500 soul stones - tool
+**Scythe** - 2000 soul stones - tool
 Increases the max percentage that can be stolen from other people
 __Limit 1 purchase per person__
 *keyword:* `scythe`
@@ -8,7 +8,7 @@ Increases souls you get from sacrificing
 __Limit 1 purchase per person__
 *keyword:* `shrine`
 
-**Spirit Forge** - 500 soul stones - tool
+**Spirit Forge** - 1500 soul stones - tool
 Generates souls every hour
 __Limit 1 purchase per person__
 *keyword:* `forge`
